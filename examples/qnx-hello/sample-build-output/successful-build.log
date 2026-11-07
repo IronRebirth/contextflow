@@ -1,0 +1,1 @@
+qcc -V gcc_ntox86_64 -Wall -Wextra -g -o build/x86_64/contextflow-hello src/main.c -lpthread

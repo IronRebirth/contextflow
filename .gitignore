@@ -1,0 +1,33 @@
+# macOS
+.DS_Store
+
+# Node.js
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+build/
+**/build/
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Forge
+.forge/
+
+# Logs
+*.log
+!examples/**/sample-build-output/*.log
+
+# QNX build artifacts
+*.o
+*.elf
+*.ifs
+*.map
+core
+
+# Editors
+.vscode/
+.idea/

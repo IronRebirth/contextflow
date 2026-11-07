@@ -1,0 +1,39 @@
+# ContextFlow QNX 8.0 IFS (Initial File System) Specification
+# Used by QNX mkifs to generate bootable target images for QEMU & x86_64 targets
+#
+# Generate with:
+#   mkifs qnx-hello.build contextflow-qnx.ifs
+#
+# Run with QEMU:
+#   qemu-system-x86_64 -m 512M -kernel contextflow-qnx.ifs -nographic
+
+[virtual=x86_64,bios +compress] .bootstrap = {
+    startup-x86
+    PATH=/proc/boot:/bin:/usr/bin procnto-smp-instr
+}
+
+[+script] .script = {
+    # Initialize basic console driver
+    devc-con -e &
+    reopen /dev/con1
+
+    display_msg ""
+    display_msg "================================================"
+    display_msg "  ContextFlow QNX 8.0 Target Runtime"
+    display_msg "  Engineering context. Connected intelligence."
+    display_msg "================================================"
+    display_msg ""
+
+    # Launch the ContextFlow demo binary with 2 threads
+    /proc/boot/contextflow-hello 2
+}
+
+# ── QNX Shared Libraries ──────────────────────────────────────────────────────
+libc.so
+libm.so
+libpthread.so
+
+# ── ContextFlow Application ───────────────────────────────────────────────────
+[data=c]
+/proc/boot/contextflow-hello = build/x86_64/contextflow-hello
+

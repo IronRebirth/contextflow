@@ -1,0 +1,137 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://contextflow.dev/schemas/diagnostic-report/v1",
+  "title": "ContextFlow Diagnostic Report",
+  "description": "Structured build diagnostic report shared between ContextFlow QNX Companion and Forge App",
+  "type": "object",
+  "required": ["schemaVersion", "platform", "buildStatus", "timestamp", "diagnostics"],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0",
+      "description": "Schema version for forward compatibility"
+    },
+    "platform": {
+      "type": "string",
+      "enum": ["QNX", "Linux", "Generic"],
+      "description": "Target platform"
+    },
+    "sdpVersion": {
+      "type": "string",
+      "description": "QNX SDP version (e.g., '8.0')"
+    },
+    "target": {
+      "type": "string",
+      "enum": ["x86_64", "aarch64"],
+      "description": "Target architecture"
+    },
+    "buildStatus": {
+      "type": "string",
+      "enum": ["success", "failed", "partial", "skipped"],
+      "description": "Overall build outcome"
+    },
+    "compiler": {
+      "type": "string",
+      "description": "Compiler used (e.g., 'qcc', 'gcc')"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of the build"
+    },
+    "duration": {
+      "type": "number",
+      "description": "Build duration in milliseconds"
+    },
+    "project": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "path": { "type": "string" },
+        "buildSystem": {
+          "type": "string",
+          "enum": ["make", "cmake", "qmake", "custom"]
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "properties": {
+        "qnxHost": { "type": "string" },
+        "qnxTarget": { "type": "string" },
+        "hostOs": { "type": "string" },
+        "hostArch": { "type": "string" },
+        "nodeVersion": { "type": "string" }
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/DiagnosticEntry"
+      }
+    },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "totalErrors": { "type": "integer", "minimum": 0 },
+        "totalWarnings": { "type": "integer", "minimum": 0 },
+        "totalNotes": { "type": "integer", "minimum": 0 },
+        "filesAffected": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "contextflowVersion": { "type": "string" },
+        "generatedBy": { "type": "string" },
+        "jiraIssueKey": { "type": "string" }
+      }
+    }
+  },
+  "definitions": {
+    "DiagnosticEntry": {
+      "type": "object",
+      "required": ["severity", "message"],
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": ["error", "warning", "note", "info"]
+        },
+        "code": {
+          "type": "string",
+          "description": "Compiler error code if available"
+        },
+        "file": {
+          "type": "string",
+          "description": "Source file path"
+        },
+        "line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "column": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "message": {
+          "type": "string"
+        },
+        "suggestion": {
+          "type": "string",
+          "description": "AI-generated or rule-based fix suggestion"
+        },
+        "context": {
+          "type": "string",
+          "description": "Surrounding source code context"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["syntax", "type", "linker", "include", "qnx-specific", "configuration", "runtime", "other"]
+        }
+      }
+    }
+  }
+}

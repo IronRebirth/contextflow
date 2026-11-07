@@ -1,0 +1,31 @@
+src/broken_main.c: In function 'main':
+src/broken_main.c:23:42: error: 'undeclared_var' undeclared (first use in this function)
+   23 |     printf("Thread count: %d\n", undeclared_var);
+      |                                  ^~~~~~~~~~~~~~
+src/broken_main.c:23:42: note: each undeclared identifier is reported only once for each function it appears in
+src/broken_main.c:26:25: error: incompatible types when initializing type 'int' using type 'char *'
+   26 |     int thread_count = "four";
+      |                         ^~~~~~
+src/broken_main.c:29:5: error: expected ';' before 'printf'
+   29 |     printf("Starting workers...\n")
+      |     ^~~~~~
+      |           ;
+src/broken_main.c:32:5: error: unknown type name 'pthread_t'
+   32 |     pthread_t thread;
+      |     ^~~~~~~~~
+src/broken_main.c:33:5: error: implicit declaration of function 'pthread_create' [-Werror=implicit-function-declaration]
+   33 |     pthread_create(&thread, NULL, NULL, NULL);
+      |     ^~~~~~~~~~~~~~
+src/broken_main.c:36:17: error: implicit declaration of function 'ChannelCreate' [-Werror=implicit-function-declaration]
+   36 |     int chid = ChannelCreate(1, 2, 3, 4, 5);
+      |                 ^~~~~~~~~~~~~
+src/broken_main.c:36:17: error: too many arguments to function 'ChannelCreate'
+   36 |     int chid = ChannelCreate(1, 2, 3, 4, 5);
+      |                 ^~~~~~~~~~~~~
+src/broken_main.c:26:9: warning: unused variable 'thread_count' [-Wunused-variable]
+   26 |     int thread_count = "four";
+      |         ^~~~~~~~~~~~
+src/broken_main.c:36:9: warning: unused variable 'chid' [-Wunused-variable]
+   36 |     int chid = ChannelCreate(1, 2, 3, 4, 5);
+      |         ^~~~
+make[1]: *** [contextflow-broken] Error 1

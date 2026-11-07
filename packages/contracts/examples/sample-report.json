@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "1.0",
+  "platform": "QNX",
+  "sdpVersion": "8.0",
+  "target": "aarch64",
+  "buildStatus": "failed",
+  "compiler": "qcc",
+  "timestamp": "2026-11-07T14:32:08.000Z",
+  "duration": 12450,
+  "project": {
+    "name": "sensor-gateway",
+    "path": "/home/dev/workspace/sensor-gateway",
+    "buildSystem": "cmake"
+  },
+  "environment": {
+    "qnxHost": "/opt/qnx/sdp8.0/host/linux/x86_64",
+    "qnxTarget": "/opt/qnx/sdp8.0/target/qnx",
+    "hostOs": "Linux",
+    "hostArch": "x86_64",
+    "nodeVersion": "20.11.0"
+  },
+  "diagnostics": [
+    {
+      "severity": "error",
+      "code": "E0020",
+      "file": "src/can_handler.cpp",
+      "line": 47,
+      "column": 12,
+      "message": "identifier \"devctl\" is undefined; did you mean \"devctlv\"?",
+      "suggestion": "Include <devctl.h> from the QNX SDP target headers. For QNX 8.0 aarch64, ensure QNX_TARGET is set and add: #include <devctl.h>",
+      "context": "    int result = devctl(fd, DCMD_CHR_SERCTL, &data, sizeof(data), NULL);",
+      "category": "qnx-specific"
+    },
+    {
+      "severity": "error",
+      "code": "E0147",
+      "file": "src/ipc_channel.cpp",
+      "line": 123,
+      "column": 5,
+      "message": "declaration is incompatible with \"int ChannelCreate(unsigned)\" (declared at line 82 of \"/opt/qnx/sdp8.0/target/qnx/usr/include/sys/neutrino.h\")",
+      "suggestion": "The ChannelCreate() signature changed in QNX 8.0. Update the call to use the new flags parameter: ChannelCreate(_NTO_CHF_FIXED_PRIORITY) instead of ChannelCreate(0).",
+      "context": "    int chid = ChannelCreate(NTO_CHF_FIXED_PRIORITY);\n    if (chid == -1) {",
+      "category": "type"
+    },
+    {
+      "severity": "warning",
+      "code": "W0064",
+      "file": "src/sensor_reader.cpp",
+      "line": 89,
+      "column": 22,
+      "message": "conversion from \"uint64_t\" to \"uint32_t\" may lose significant bits",
+      "suggestion": "Use an explicit static_cast<uint32_t>() to silence this warning, or widen the receiving variable to uint64_t to avoid potential data loss on 64-bit targets.",
+      "context": "    uint32_t timestamp = ClockCycles();",
+      "category": "type"
+    }
+  ],
+  "summary": {
+    "totalErrors": 2,
+    "totalWarnings": 1,
+    "totalNotes": 0,
+    "filesAffected": [
+      "src/can_handler.cpp",
+      "src/ipc_channel.cpp",
+      "src/sensor_reader.cpp"
+    ]
+  },
+  "metadata": {
+    "contextflowVersion": "1.0.0",
+    "generatedBy": "qnx-companion-cli",
+    "jiraIssueKey": "SENS-1042"
+  }
+}

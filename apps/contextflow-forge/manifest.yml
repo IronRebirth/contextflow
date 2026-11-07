@@ -1,0 +1,67 @@
+modules:
+  jira:issuePanel:
+    - key: contextflow-diagnostics-panel
+      resource: main
+      resolver:
+        function: resolver
+      render: native
+      title: ContextFlow Diagnostics
+      icon: https://developer.atlassian.com/platform/forge/images/icons/issue-panel-icon.svg
+
+  rovo:agent:
+    - key: contextflow-rovo-agent
+      name: ContextFlow Assistant
+      description: Analyzes build diagnostics, explains errors, and suggests fixes
+        based on project context.
+      prompt: |
+        You are ContextFlow Assistant, an AI engineering companion.
+        You help developers understand build failures, QNX-specific errors, and suggest actionable fixes.
+        When a user asks about a build failure:
+        1. Look at the diagnostic report attached to the issue
+        2. Explain each error in plain language
+        3. Suggest specific fixes
+        4. Reference relevant documentation if available
+        Always be specific and actionable. Reference actual file paths and line numbers from the diagnostics.
+      actions:
+        - contextflow-analyze-action
+
+  action:
+    - key: contextflow-analyze-action
+      name: Analyze Build Report
+      function: analyze-diagnostics
+      actionType: READ_ONLY
+      description: Analyzes the latest diagnostic report for the current issue
+      inputs:
+        type: object
+        title: Diagnostic Analysis Inputs
+        description: Input parameters for the diagnostic analysis action
+        properties:
+          issueKey:
+            type: string
+            title: Issue Key
+            description: The Jira issue key to analyze
+
+  function:
+    - key: resolver
+      handler: index.handler
+    - key: analyze-diagnostics
+      handler: index.analyzeDiagnosticsHandler
+
+resources:
+  - key: main
+    path: src/frontend/index.jsx
+
+permissions:
+  scopes:
+    - search:confluence
+    - read:jira-work
+    - write:jira-work
+    - storage:app
+    - read:confluence-content.all
+
+app:
+  runtime:
+    name: nodejs24.x
+    memoryMB: 256
+    architecture: arm64
+  id: ari:cloud:ecosystem::app/aeb2b6a7-bd21-4ac0-bfee-5f7586d56125

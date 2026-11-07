@@ -1,0 +1,32 @@
+{
+  "name": "contextflow",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Engineering context. Connected intelligence. A development companion bridging QNX 8.0 and Atlassian Cloud.",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "qnx:doctor": "npm run --prefix apps/qnx-companion dev -- doctor",
+    "qnx:analyze": "npm run --prefix apps/qnx-companion dev -- analyze examples/qnx-hello/sample-build-output/failed-build.log",
+    "qnx:build": "npm run --prefix apps/qnx-companion dev -- build examples/qnx-hello --dry-run",
+    "qnx:publish": "npm run --prefix apps/qnx-companion dev -- publish packages/contracts/examples/sample-report.json --issue-key DEMO-101 --dry-run",
+    "forge:lint": "npm run --prefix apps/contextflow-forge lint",
+    "test": "echo 'Run workspace tests'"
+  },
+  "keywords": [
+    "qnx",
+    "qnx8",
+    "qcc",
+    "atlassian",
+    "forge",
+    "jira",
+    "rovo",
+    "codegeist",
+    "hackathon"
+  ],
+  "author": "ContextFlow Contributors",
+  "license": "MIT"
+}
+

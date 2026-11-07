@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "1.0",
+  "platform": "QNX",
+  "sdpVersion": "8.0",
+  "target": "aarch64",
+  "buildStatus": "success",
+  "compiler": "qcc",
+  "timestamp": "2026-11-07T15:10:44.000Z",
+  "duration": 8230,
+  "project": {
+    "name": "sensor-gateway",
+    "path": "/home/dev/workspace/sensor-gateway",
+    "buildSystem": "cmake"
+  },
+  "environment": {
+    "qnxHost": "/opt/qnx/sdp8.0/host/linux/x86_64",
+    "qnxTarget": "/opt/qnx/sdp8.0/target/qnx",
+    "hostOs": "Linux",
+    "hostArch": "x86_64",
+    "nodeVersion": "20.11.0"
+  },
+  "diagnostics": [
+    {
+      "severity": "warning",
+      "code": "W0064",
+      "file": "src/sensor_reader.cpp",
+      "line": 89,
+      "column": 22,
+      "message": "conversion from \"uint64_t\" to \"uint32_t\" may lose significant bits",
+      "suggestion": "Use an explicit static_cast<uint32_t>() or widen the receiving variable to uint64_t.",
+      "context": "    uint32_t timestamp = ClockCycles();",
+      "category": "type"
+    },
+    {
+      "severity": "warning",
+      "code": "W0221",
+      "file": "src/config_parser.cpp",
+      "line": 34,
+      "column": 3,
+      "message": "variable \"buf\" is set but never used",
+      "suggestion": "Remove the unused variable or prefix with [[maybe_unused]] if it is intentionally reserved for future use.",
+      "context": "    char buf[256];\n    // TODO: read config from /etc/sensor-gateway.conf",
+      "category": "other"
+    }
+  ],
+  "summary": {
+    "totalErrors": 0,
+    "totalWarnings": 2,
+    "totalNotes": 0,
+    "filesAffected": [
+      "src/sensor_reader.cpp",
+      "src/config_parser.cpp"
+    ]
+  },
+  "metadata": {
+    "contextflowVersion": "1.0.0",
+    "generatedBy": "qnx-companion-cli"
+  }
+}

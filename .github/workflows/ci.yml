@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Build, Lint & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm install --prefix packages/contracts
+          npm install --prefix apps/qnx-companion
+
+      - name: Build contracts package
+        run: npm run build --prefix packages/contracts
+
+      - name: Build QNX companion CLI
+        run: |
+          npm run build --prefix apps/qnx-companion
+          chmod +x apps/qnx-companion/dist/index.js
+
+      - name: Run unit tests
+        run: ./apps/qnx-companion/node_modules/.bin/tsx --test tests/*.test.js
+
+      - name: Verify QNX environment doctor
+        run: ./apps/qnx-companion/dist/index.js doctor --json
+
+      - name: Verify build analyzer
+        run: ./apps/qnx-companion/dist/index.js analyze examples/qnx-hello/sample-build-output/failed-build.log --json
+
+      - name: Verify Jira publisher (dry-run)
+        run: ./apps/qnx-companion/dist/index.js publish packages/contracts/examples/sample-report.json --issue-key CI-101 --dry-run
