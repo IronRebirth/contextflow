@@ -57,6 +57,9 @@ npm run dev -- doctor
 # Analyze a sample QNX build failure
 npm run dev -- analyze ../../examples/qnx-hello/sample-build-output/failed-build.log
 
+# Launch the visual web dashboard
+npm run dev -- dashboard ../../examples/qnx-hello/sample-build-output/failed-build.log
+
 # Export structured report in JSON Schema v1.0 format
 npm run dev -- analyze ../../examples/qnx-hello/sample-build-output/failed-build.log --json
 

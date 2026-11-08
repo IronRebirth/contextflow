@@ -6,6 +6,7 @@ import { runDoctor } from './commands/doctor.js';
 import { runAnalyze } from './commands/analyze.js';
 import { runBuild } from './commands/build.js';
 import { runPublish } from './commands/publish.js';
+import { runDashboard } from './commands/dashboard.js';
 import { setLogLevel } from './utils/logger.js';
 
 const program = new Command();
@@ -85,6 +86,23 @@ program
       await runPublish(report || '-', options);
     } catch (err: any) {
       console.error(chalk.red(`Publish failed: ${err.message}`));
+      process.exit(1);
+    }
+  });
+
+// ── Command: dashboard ───────────────────────────────────────────────────────
+program
+  .command('dashboard [target]')
+  .description('Launch interactive visual web dashboard for build diagnostics')
+  .option('-o, --output <file>', 'Custom output HTML file destination')
+  .option('--no-open', 'Generate HTML file without automatically opening browser')
+  .option('-t, --target <arch>', 'Target architecture', 'x86_64')
+  .option('-p, --project <name>', 'Project name')
+  .action(async (target, options) => {
+    try {
+      await runDashboard(target, options);
+    } catch (err: any) {
+      console.error(chalk.red(`Dashboard failed: ${err.message}`));
       process.exit(1);
     }
   });

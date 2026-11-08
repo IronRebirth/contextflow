@@ -31,3 +31,7 @@ core
 # Editors
 .vscode/
 .idea/
+
+# Generated local dashboard preview
+*.html
+
